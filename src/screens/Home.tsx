@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { View, Text, ScrollView, Alert } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 import { api } from "../lib/axios";
 import { generateRangeDatesFromYearStart } from '../utils/generate-range-between-dates';
@@ -42,9 +42,9 @@ export function Home() {
     }
   }
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     fetchData();
-  },[]);
+  },[]));
 
   if(loading) {
     return (
@@ -80,7 +80,7 @@ export function Home() {
           {
             datesFromYearStart.map(date => {
               const dayWithHabits = summary.find(day => {
-                return dayjs(date).isSame(day.date)
+                return dayjs(date).isSame(day.date, 'day')
               })
 
               return (
